@@ -1,0 +1,5 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+    <rect width="500" height="500" fill="#6c63ff"/>
+    <text x="250" y="250" font-family="Arial" font-size="50" text-anchor="middle" fill="white">Profile Photo</text>
+    <text x="250" y="300" font-family="Arial" font-size="25" text-anchor="middle" fill="white">500 x 500</text>
+</svg> 

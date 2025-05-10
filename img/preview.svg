@@ -1,0 +1,5 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="400" fill="#6c63ff"/>
+    <text x="400" y="200" font-family="Arial" font-size="50" text-anchor="middle" fill="white">Portfolio Preview</text>
+    <text x="400" y="260" font-family="Arial" font-size="25" text-anchor="middle" fill="white">800 x 400</text>
+</svg> 

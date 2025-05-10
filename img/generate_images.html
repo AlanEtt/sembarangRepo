@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .image-container {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pembuat Gambar Placeholder</h1>
+    <p>Klik tombol di bawah untuk membuat dan mengunduh gambar placeholder untuk website portofolio Anda:</p>
+    
+    <div class="image-container">
+        <h2>1. Profile Image (500x500)</h2>
+        <canvas id="profileCanvas" width="500" height="500"></canvas><br>
+        <button onclick="generateImage('profileCanvas', '#6c63ff', 'Profile Photo', 'profile.png')">Generate & Download</button>
+    </div>
+    
+    <div class="image-container">
+        <h2>2. About Image (800x600)</h2>
+        <canvas id="aboutCanvas" width="800" height="600"></canvas><br>
+        <button onclick="generateImage('aboutCanvas', '#4db6ac', 'About Photo', 'about.jpg')">Generate & Download</button>
+    </div>
+    
+    <div class="image-container">
+        <h2>3. Portfolio Images (350x250)</h2>
+        <h3>Portfolio 1:</h3>
+        <canvas id="portfolio1Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio1Canvas', '#f50057', 'Project 1', 'portfolio-1.jpg')">Generate & Download</button>
+        
+        <h3>Portfolio 2:</h3>
+        <canvas id="portfolio2Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio2Canvas', '#ff9800', 'Project 2', 'portfolio-2.jpg')">Generate & Download</button>
+        
+        <h3>Portfolio 3:</h3>
+        <canvas id="portfolio3Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio3Canvas', '#9c27b0', 'Project 3', 'portfolio-3.jpg')">Generate & Download</button>
+        
+        <h3>Portfolio 4:</h3>
+        <canvas id="portfolio4Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio4Canvas', '#009688', 'Project 4', 'portfolio-4.jpg')">Generate & Download</button>
+        
+        <h3>Portfolio 5:</h3>
+        <canvas id="portfolio5Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio5Canvas', '#3f51b5', 'Project 5', 'portfolio-5.jpg')">Generate & Download</button>
+        
+        <h3>Portfolio 6:</h3>
+        <canvas id="portfolio6Canvas" width="350" height="250"></canvas><br>
+        <button onclick="generateImage('portfolio6Canvas', '#607d8b', 'Project 6', 'portfolio-6.jpg')">Generate & Download</button>
+    </div>
+    
+    <div class="image-container">
+        <h2>4. Preview Image (800x400)</h2>
+        <canvas id="previewCanvas" width="800" height="400"></canvas><br>
+        <button onclick="generateImage('previewCanvas', '#6c63ff', 'Portfolio Preview', 'preview.jpg')">Generate & Download</button>
+    </div>
+    
+    <script>
+        // Fungsi untuk membuat gambar placeholder dengan warna dan teks
+        function generateImage(canvasId, color, text, filename) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Bersihkan canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            // Isi latar belakang
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, width, height);
+            
+            // Tambahkan pattern grid
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            const gridSize = 20;
+            
+            // Buat grid horizontal
+            for (let y = 0; y < height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            
+            // Buat grid vertikal
+            for (let x = 0; x < width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // Tambahkan teks
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Tentukan ukuran font berdasarkan ukuran canvas
+            const fontSize = Math.min(width, height) / 10;
+            ctx.font = `bold ${fontSize}px Arial`;
+            
+            // Tambahkan teks
+            ctx.fillText(text, width / 2, height / 2);
+            
+            // Tambahkan ukuran di bawah teks
+            ctx.font = `${fontSize / 2}px Arial`;
+            ctx.fillText(`${width} x ${height}`, width / 2, height / 2 + fontSize);
+            
+            // Buat link download
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/jpeg', 0.8);
+            link.click();
+        }
+        
+        // Prerender gambar kosong
+        window.onload = function() {
+            const canvasIds = [
+                'profileCanvas', 'aboutCanvas', 'previewCanvas',
+                'portfolio1Canvas', 'portfolio2Canvas', 'portfolio3Canvas',
+                'portfolio4Canvas', 'portfolio5Canvas', 'portfolio6Canvas'
+            ];
+            
+            const colors = [
+                '#6c63ff', '#4db6ac', '#6c63ff',
+                '#f50057', '#ff9800', '#9c27b0',
+                '#009688', '#3f51b5', '#607d8b'
+            ];
+            
+            const texts = [
+                'Profile Photo', 'About Photo', 'Portfolio Preview',
+                'Project 1', 'Project 2', 'Project 3',
+                'Project 4', 'Project 5', 'Project 6'
+            ];
+            
+            canvasIds.forEach((id, index) => {
+                const canvas = document.getElementById(id);
+                const ctx = canvas.getContext('2d');
+                const width = canvas.width;
+                const height = canvas.height;
+                
+                // Latar belakang
+                ctx.fillStyle = colors[index];
+                ctx.fillRect(0, 0, width, height);
+                
+                // Tambahkan pattern grid
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.lineWidth = 1;
+                const gridSize = 20;
+                
+                // Grid horizontal
+                for (let y = 0; y < height; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(width, y);
+                    ctx.stroke();
+                }
+                
+                // Grid vertikal
+                for (let x = 0; x < width; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, height);
+                    ctx.stroke();
+                }
+                
+                // Teks
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // Ukuran font
+                const fontSize = Math.min(width, height) / 10;
+                ctx.font = `bold ${fontSize}px Arial`;
+                
+                // Tambahkan teks
+                ctx.fillText(texts[index], width / 2, height / 2);
+                
+                // Tambahkan ukuran
+                ctx.font = `${fontSize / 2}px Arial`;
+                ctx.fillText(`${width} x ${height}`, width / 2, height / 2 + fontSize);
+            });
+        };
+    </script>
+</body>
+</html> 
