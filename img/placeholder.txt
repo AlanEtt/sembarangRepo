@@ -1,0 +1,13 @@
+Folder ini berisi gambar untuk website portofolio.
+
+Untuk menjalankan website dengan benar, Anda perlu menambahkan gambar berikut:
+
+1. profile.png - Gambar profil untuk hero section
+2. about.jpg - Gambar untuk bagian tentang
+3. portfolio-1.jpg sampai portfolio-6.jpg - Gambar untuk proyek portofolio
+4. preview.jpg - Screenshot preview website untuk README.md
+
+Anda dapat menggunakan gambar placeholder dari:
+- https://placeholder.com/
+- https://picsum.photos/
+- https://unsplash.com/ 
