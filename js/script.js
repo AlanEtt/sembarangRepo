@@ -2,8 +2,9 @@
 const cursor = document.querySelector('.cursor');
 const cursorFollower = document.querySelector('.cursor-follower');
 
-document.addEventListener('mousemove', (e) => {
-    if(cursor && cursorFollower) {
+// Hanya jalankan fungsi mouse move jika kedua elemen cursor ada
+if(cursor && cursorFollower) {
+    document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
         
@@ -11,20 +12,28 @@ document.addEventListener('mousemove', (e) => {
             cursorFollower.style.left = e.clientX + 'px';
             cursorFollower.style.top = e.clientY + 'px';
         }, 50);
-    }
-});
+    });
+}
 
-// ===== NAVBAR STICKY =====
+// ===== NAVBAR STICKY & BACK TO TOP =====
 const header = document.querySelector('header');
 const backToTop = document.querySelector('.back-to-top');
 
 window.addEventListener('scroll', () => {
-    if(header && backToTop) {
+    // Periksa header exists
+    if(header) {
         if (window.scrollY > 100) {
             header.classList.add('scrolled');
-            backToTop.classList.add('show');
         } else {
             header.classList.remove('scrolled');
+        }
+    }
+    
+    // Periksa backToTop exists secara terpisah
+    if(backToTop) {
+        if (window.scrollY > 100) {
+            backToTop.classList.add('show');
+        } else {
             backToTop.classList.remove('show');
         }
     }
@@ -74,31 +83,40 @@ if(typedTextSpan && cursorSpan) {
     let charIndex = 0;
 
     function type() {
-        if (charIndex < textArray[textArrayIndex].length) {
-            if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
-            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(type, typingDelay);
-        } else {
-            cursorSpan.classList.remove('typing');
-            setTimeout(erase, newTextDelay);
+        try {
+            if (charIndex < textArray[textArrayIndex].length) {
+                if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } else {
+                cursorSpan.classList.remove('typing');
+                setTimeout(erase, newTextDelay);
+            }
+        } catch (error) {
+            console.error('Error in typing effect:', error);
         }
     }
 
     function erase() {
-        if (charIndex > 0) {
-            if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
-            typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
-            charIndex--;
-            setTimeout(erase, erasingDelay);
-        } else {
-            cursorSpan.classList.remove('typing');
-            textArrayIndex++;
-            if (textArrayIndex >= textArray.length) textArrayIndex = 0;
-            setTimeout(type, typingDelay + 1100);
+        try {
+            if (charIndex > 0) {
+                if (!cursorSpan.classList.contains('typing')) cursorSpan.classList.add('typing');
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } else {
+                cursorSpan.classList.remove('typing');
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+                setTimeout(type, typingDelay + 1100);
+            }
+        } catch (error) {
+            console.error('Error in typing erase effect:', error);
         }
     }
 
+    // Hanya mulai efek typing jika array teks tidak kosong
     if (textArray.length) setTimeout(type, newTextDelay + 250);
 }
 
@@ -218,20 +236,24 @@ function animateSkills() {
         
         if (sectionPos < screenPosition) {
             skillBars.forEach(bar => {
-                // Dapatkan nilai width dari style inline
-                const width = bar.style.width;
-                
-                if(width) {
-                    // Simpan nilai width asli
-                    if(!bar.dataset.width) {
-                        bar.dataset.width = width;
-                    }
+                try {
+                    // Dapatkan nilai width dari style inline atau dari atribut data-width
+                    const width = bar.style.width || bar.getAttribute('data-width');
                     
-                    // Animasi
-                    bar.style.width = '0';
-                    setTimeout(() => {
-                        bar.style.width = bar.dataset.width;
-                    }, 100);
+                    if(width) {
+                        // Simpan nilai width asli jika belum ada
+                        if(!bar.dataset.width) {
+                            bar.dataset.width = width;
+                        }
+                        
+                        // Animasi
+                        bar.style.width = '0';
+                        setTimeout(() => {
+                            bar.style.width = bar.dataset.width;
+                        }, 100);
+                    }
+                } catch (error) {
+                    console.error('Error animating skill bar:', error);
                 }
             });
         }
@@ -299,9 +321,23 @@ if (contactForm) {
         
         /* Style untuk mengatasi konflik kelas .cursor */
         .cursor.typing {
-            animation: none;
-            width: 3px;
-            background-color: var(--primary-color);
+            animation: none !important;
+            width: 3px !important;
+            background-color: var(--primary-color) !important;
+            position: relative !important;
+            transform: none !important;
+            mix-blend-mode: normal !important;
+        }
+        
+        /* Perbaikan untuk animasi blink pada typing cursor */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Pastikan .cursor-follower tidak mengganggu .typed-text */
+        .typed-text + .cursor {
+            z-index: 1 !important;
         }
         `;
         
